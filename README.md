@@ -61,11 +61,84 @@ docker-compose up -d
 
 ```bash
 /
-├── backend/          # FastAPI
-├── frontend/         # Next.js
-├── docker-compose.yml
-├── .env.example
-└── .gitignore
+├── backend/                          # FastAPI バックエンド
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── main.py                    # FastAPIアプリケーション エントリポイント
+│   │   ├── api/
+│   │   │   ├── __init__.py
+│   │   │   └── v1/                    # API v1 (バージョニング対応)
+│   │   │       ├── __init__.py
+│   │   │       ├── router.py          # ルーター集約
+│   │   │       └── endpoints/         # エンドポイント別ファイル
+│   │   │           ├── __init__.py
+│   │   │           ├── uploads.py     # 画像アップロード
+│   │   │           ├── posts.py       # 記事生成・取得
+│   │   │           └── comments.py    # 過去コメント取得
+│   │   ├── core/
+│   │   │   ├── __init__.py
+│   │   │   ├── config.py             # pydantic-settings 環境変数管理
+│   │   │   ├── dependencies.py       # FastAPI Dependencies
+│   │   │   ├── security.py           # APIキー認証
+│   │   │   └── celery_app.py         # Celery設定
+│   │   ├── schemas/                   # Pydantic スキーマ
+│   │   │   ├── __init__.py
+│   │   │   ├── upload.py
+│   │   │   └── post.py
+│   │   ├── services/                  # ビジネスロジック
+│   │   │   ├── __init__.py
+│   │   │   ├── upload_service.py     # 画像保存処理
+│   │   │   ├── post_service.py      # 記事生成フロー
+│   │   │   ├── wp_service.py        # WordPress REST API連携
+│   │   │   └── ai_service.py        # Claude/LiteLLM記事生成
+│   │   └── tasks/                     # Celery非同期タスク
+│   │       ├── __init__.py
+│   │       └── post_task.py          # 記事生成タスク
+│   ├── tests/
+│   │   ├── __init__.py
+│   │   ├── api/
+│   │   │   ├── __init__.py
+│   │   │   └── test_health.py
+│   │   └── services/
+│   │       └── __init__.py
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   ├── pyproject.toml
+│   └── .env.example
+│
+├── frontend/                         # Next.js 15 フロントエンド
+│   ├── src/
+│   │   ├── app/                      # App Router
+│   │   │   ├── layout.tsx            # ルートレイアウト
+│   │   │   ├── page.tsx              # ホームページ
+│   │   │   ├── loading.tsx           # 共通ローディングUI
+│   │   │   ├── error.tsx             # 共通エラーUI
+│   │   │   ├── not-found.tsx         # 404ページ
+│   │   │   └── globals.css           # TailwindベースCSS
+│   │   ├── components/
+│   │   │   ├── upload-form.tsx       # 画像アップロードフォーム
+│   │   │   └── ui/                   # shadcn/ui コンポーネント
+│   │   │       ├── button.tsx
+│   │   │       ├── toast.tsx
+│   │   │       └── toaster.tsx
+│   │   ├── hooks/
+│   │   │   └── use-toast.ts          # トースト通知フック
+│   │   └── lib/
+│   │       ├── utils.ts              # cn() ユーティリティ
+│   │       └── api.ts                # バックエンドAPIクライアント
+│   ├── public/                       # 静的アセット
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── next.config.js
+│   ├── tailwind.config.js
+│   ├── postcss.config.js
+│   └── .env.example
+│
+├── prompts/                          # Claudeプロンプトテンプレート
+├── docker-compose.yml                # Docker Compose (backend + celery + frontend + redis)
+├── .gitignore
+└── README.md
 ```
 
 ## .gitignore の主な設定
