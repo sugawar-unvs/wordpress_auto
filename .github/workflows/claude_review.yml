@@ -117,12 +117,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # コメントを投稿
-          COMMENT_BODY="## 🤖 Claude AI レビュー
+          cat <<EOF > /tmp/review_comment.md
+          ## 🤖 Claude AI レビュー
 
-$REVIEW
+          $REVIEW
 
----
-*Powered by [Claude](https://claude.ai) (Anthropic) · モデル: \`${{ vars.CLAUDE_MODEL || 'claude-sonnet-4-20250514' }}\`*"
-
-          gh pr comment $PR_NUMBER --body "$COMMENT_BODY"
+          ---
+          *Powered by [Claude](https://claude.ai) (Anthropic) · モデル: \`${{ vars.CLAUDE_MODEL || 'claude-sonnet-4-20250514' }}\`*
+          EOF
+          gh pr comment $PR_NUMBER --body-file /tmp/review_comment.md
