@@ -36,11 +36,6 @@
 
 ### セットアップ手順
 
-```bash
-# リポジトリをクローン
-git clone <your-repo-url>
-cd universe-auto-blogger
-
 # バックエンド
 cd backend
 cp .env.example .env
