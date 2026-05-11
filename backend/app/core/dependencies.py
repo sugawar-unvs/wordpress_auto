@@ -1,5 +1,5 @@
-from app.core.config import Settings
+from app.core.config import Settings, settings
 
 
 def get_settings() -> Settings:
-    return Settings()
+    return settings
