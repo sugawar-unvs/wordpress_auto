@@ -5,6 +5,10 @@ from typing import List
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Universe Club Auto Blog Poster"
     VERSION: str = "0.1.0"
+    API_V1_STR: str = "/api/v1"
+
+    # Security
+    API_KEY: str = ""
 
     # WordPress
     WP_URL: str = ""
@@ -28,3 +32,6 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: List[str] = ["http://localhost:3000"]
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
+
+
+settings = Settings()
